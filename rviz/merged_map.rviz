@@ -38,7 +38,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /map_merged_2
+      Topic: /map_merged
       Unreliable: false
       Use Timestamp: false
       Value: true
