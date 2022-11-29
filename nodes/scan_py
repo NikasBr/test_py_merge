@@ -9,6 +9,10 @@ if os.name == 'nt':
 else:
   import tty, termios
 
+class turnStyle:
+  turning = False
+  turningLeft = False
+
 BURGER_MAX_LIN_VEL = 0.22
 BURGER_MAX_ANG_VEL = 2.84
 
@@ -17,9 +21,9 @@ WAFFLE_MAX_ANG_VEL = 1.82
 
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.1
+turn = turnStyle
 twist = Twist()
-
-isTurning = False
+twist.linear.x = 1.0; twist.linear.y = 0.0; twist.linear.z = 0.0
 
 def vels(target_linear_vel, target_angular_vel):
     return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
@@ -64,7 +68,7 @@ def checkAngularLimitVelocity(vel):
 
     return vel
 
-def callback(data):
+def callback(msg):
     shouldDodge = False
     for i in msg.ranges[1:45]:
         if i < 0.2 and i > 0:
@@ -81,18 +85,18 @@ def callback(data):
         twist.linear.x = 0.0
         twist.linear.y = 0.0
         twist.linear.z = 0.0
-        if not isTurning
-            turnLeft = bool(random.getrandbits(1))
-        isTurning = True
+        if not turn.turning:
+            turn.turningLeft = bool(random.getrandbits(1))
+        turn.turning = True
 
-        if turnLeft:
+        if turn.turningLeft:
             twist.angular.x = 0.0
             twist.angular.y = 0.0
-            twist.angular.z = 2.0;
+            twist.angular.z = 2.0
         else:
             twist.angular.x = 0.0
             twist.angular.y = 0.0
-            twist.angular.z = -2.0;
+            twist.angular.z = -2.0
     else:
         twist.angular.x = 0.0
         twist.angular.y = 0.0
@@ -100,7 +104,7 @@ def callback(data):
         twist.linear.x = 0.3
         twist.linear.y = 0.0
         twist.linear.z = 0.0
-        isTurning = False
+        turn.turning = False
     pub.publish(twist)
     return
 
@@ -108,6 +112,7 @@ if __name__=="__main__":
     if os.name != 'nt':
         settings = termios.tcgetattr(sys.stdin)
 
+    isTurning = False
     rospy.init_node('scan_py')
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     scan = rospy.Subscriber('scan', LaserScan, callback)
