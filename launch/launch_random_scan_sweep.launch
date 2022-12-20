@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find test_py_merge)/launch/scan_py.launch" ns="tb1">
+    </include>
+
+    <include file="$(find test_py_merge)/launch/scan_py.launch" ns="tb2">
+    </include>
+
+</launch>

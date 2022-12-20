@@ -70,16 +70,14 @@ def checkAngularLimitVelocity(vel):
 
 def callback(msg):
     shouldDodge = False
-    for i in msg.ranges[1:45]:
-        if i < 0.2 and i > 0:
+    for i in msg.ranges[0:45]:
+        if i < 0.3 and i > 0:
             shouldDodge = True
             break
     for i in msg.ranges[315:359]:
-        if i < 0.2 and i > 0:
+        if i < 0.3 and i > 0:
             shouldDodge = True
             break
-    if msg.ranges[0] < 0.4 and msg.ranges[0] > 0:
-        shouldDodge = True
 
     if shouldDodge:
         twist.linear.x = 0.0

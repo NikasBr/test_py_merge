@@ -1,11 +1,11 @@
 <launch>
     <arg name="my_ns"/>
     <group ns="$(arg my_ns)">
-        <include file="$(find test_py_merge)/launch/scan_py.launch">
-            <arg name="set_base_frame" value="base_footprint"/>
-            <arg name="set_odom_frame" value="odom"/>
-            <arg name="set_map_frame" value="map"/>
-            <arg name="multi_robot_name" value=""/>
+        <include file="$(find test_py_merge)/launch/map_scan.launch">
+            <arg name="set_base_frame" value="$(arg my_ns)/base_footprint"/>
+            <arg name="set_odom_frame" value="$(arg my_ns)/odom"/>
+            <arg name="set_map_frame" value="$(arg my_ns)/map"/>
+            <arg name="multi_robot_name" value="$(arg my_ns)"/>
         </include>
     </group>
 </launch>
